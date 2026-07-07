@@ -82,7 +82,10 @@ function renderGrid(){
         <span class="${elim ? 'badge-elim' : 'badge-alive'}">${elim ? 'ELIMINATED' : 'ALIVE (' + aliveCount + '/4)'}</span>
       </div>
       <div class="team-id">
-        <div class="logo">${team.logo}<span class="dot"></span></div>
+        <div class="logo-wrapper">
+          <input class="team-logo" value="${team.logo}" data-idx="${idx}" maxlength="4" placeholder="🐉" />
+          <span class="dot"></span>
+        </div>
         <input class="team-name" value="${team.name}" data-idx="${idx}" />
       </div>
       <div class="kills-row">
@@ -118,6 +121,11 @@ document.getElementById('teamGrid').addEventListener('change', (e)=>{
   if(e.target.classList.contains('team-name')){
     const idx = parseInt(e.target.dataset.idx);
     state.teams[idx].name = e.target.value || ('Team ' + (idx+1));
+    saveState();
+  }
+  if(e.target.classList.contains('team-logo')){
+    const idx = parseInt(e.target.dataset.idx);
+    state.teams[idx].logo = e.target.value || '🎯';
     saveState();
   }
 });

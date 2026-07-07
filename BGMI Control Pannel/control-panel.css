@@ -81,11 +81,38 @@ header{display:flex;align-items:center;justify-content:space-between;margin-bott
 .badge-elim{color:var(--red-bright);font-weight:700;letter-spacing:.5px;}
 
 .team-id{display:flex;align-items:center;gap:10px;}
-.logo{
-  width:34px;height:34px;border-radius:6px;background:var(--panel-2);border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;position:relative;
+.logo-wrapper{
+  position:relative;
+  display:flex;
+  flex-shrink:0;
 }
-.logo .dot{position:absolute;bottom:-2px;right:-2px;width:9px;height:9px;border-radius:50%;background:var(--gold);border:2px solid var(--panel);}
+.logo-wrapper .dot{
+  position:absolute;
+  bottom:-2px;
+  right:-2px;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:var(--gold);
+  border:2px solid var(--panel);
+  pointer-events:none;
+}
+.team-logo{
+  width:34px;
+  height:34px;
+  border-radius:6px;
+  background:var(--panel-2);
+  border:1px solid var(--border);
+  color:var(--text);
+  font-size:15px;
+  text-align:center;
+  outline:none;
+  padding:0;
+  transition:.15s;
+}
+.team-logo:focus, .team-logo:hover{
+  border-color:var(--gold);
+}
 .team-name{
   background:transparent;border:none;color:var(--text);font-size:14px;font-weight:600;
   width:100%;outline:none;padding:0;
