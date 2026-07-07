@@ -13,6 +13,14 @@ function loadState(){
   return { teams: [] };
 }
 
+function renderLogo(logo){
+  if(!logo) return '🎯';
+  if(logo.startsWith('data:image/') || logo.startsWith('http://') || logo.startsWith('https://') || logo.includes('.')){
+    return `<img src="${logo}" style="width:100%; height:100%; object-fit:cover; border-radius:inherit;" />`;
+  }
+  return logo;
+}
+
 function render(stateOverride){
   const state = stateOverride || loadState();
   const teams = state.teams || [];
@@ -42,7 +50,7 @@ function render(stateOverride){
     return `
       <div class="row${elim ? ' eliminated' : ''}">
         <div class="rank">${i+1}</div>
-        <div class="logo">${t.logo || '🎯'}</div>
+        <div class="logo">${renderLogo(t.logo)}</div>
         <div class="name">${t.name}</div>
         <div class="alive-dots">
           ${t.players.map((p, pi) => `<div class="adot${getPlayerAlive(p) ? '' : ' dead'}"></div>`).join('')}

@@ -66,6 +66,14 @@ function renderStats(){
   document.getElementById('teamCount').textContent = state.teams.length + ' Teams';
 }
 
+function renderLogo(logo){
+  if(!logo) return '🎯';
+  if(logo.startsWith('data:image/') || logo.startsWith('http://') || logo.startsWith('https://') || logo.includes('.')){
+    return `<img src="${logo}" style="width:100%; height:100%; object-fit:cover; border-radius:inherit;" />`;
+  }
+  return logo;
+}
+
 function renderGrid(){
   const grid = document.getElementById('teamGrid');
   grid.innerHTML = '';
@@ -82,9 +90,10 @@ function renderGrid(){
         <span class="${elim ? 'badge-elim' : 'badge-alive'}">${elim ? 'ELIMINATED' : 'ALIVE (' + aliveCount + '/4)'}</span>
       </div>
       <div class="team-id">
-        <div class="logo-wrapper">
-          <input class="team-logo" value="${team.logo}" data-idx="${idx}" maxlength="4" placeholder="🐉" />
+        <div class="logo-wrapper" data-act="upload-logo" data-idx="${idx}" title="Click to upload logo image">
+          <div class="logo-preview">${renderLogo(team.logo)}</div>
           <span class="dot"></span>
+          <input type="file" class="logo-file-input" accept="image/*" data-idx="${idx}" style="display:none;" />
         </div>
         <input class="team-name" value="${team.name}" data-idx="${idx}" />
       </div>
@@ -113,6 +122,11 @@ document.getElementById('teamGrid').addEventListener('click', (e)=>{
   if(act === 'kplus'){ team.kills++; }
   else if(act === 'kminus'){ team.kills = Math.max(0, team.kills-1); }
   else if(act === 'toggle'){ const p = parseInt(el.dataset.p); team.players[p] = !team.players[p]; }
+  else if(act === 'upload-logo'){
+    const fileInput = el.querySelector('.logo-file-input');
+    if(fileInput) fileInput.click();
+    return;
+  }
   saveState();
   renderGrid();
 });
@@ -123,10 +137,18 @@ document.getElementById('teamGrid').addEventListener('change', (e)=>{
     state.teams[idx].name = e.target.value || ('Team ' + (idx+1));
     saveState();
   }
-  if(e.target.classList.contains('team-logo')){
+  if(e.target.classList.contains('logo-file-input')){
     const idx = parseInt(e.target.dataset.idx);
-    state.teams[idx].logo = e.target.value || '🎯';
-    saveState();
+    const file = e.target.files[0];
+    if(file){
+      const reader = new FileReader();
+      reader.onload = (ev)=>{
+        state.teams[idx].logo = ev.target.result;
+        saveState();
+        renderGrid();
+      };
+      reader.readAsDataURL(file);
+    }
   }
 });
 

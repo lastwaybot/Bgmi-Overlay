@@ -97,20 +97,21 @@ header{display:flex;align-items:center;justify-content:space-between;margin-bott
   border:2px solid var(--panel);
   pointer-events:none;
 }
-.team-logo{
+.logo-preview{
   width:34px;
   height:34px;
   border-radius:6px;
   background:var(--panel-2);
   border:1px solid var(--border);
-  color:var(--text);
+  display:flex;
+  align-items:center;
+  justify-content:center;
   font-size:15px;
-  text-align:center;
-  outline:none;
-  padding:0;
+  cursor:pointer;
   transition:.15s;
+  overflow:hidden;
 }
-.team-logo:focus, .team-logo:hover{
+.logo-wrapper:hover .logo-preview{
   border-color:var(--gold);
 }
 .team-name{
