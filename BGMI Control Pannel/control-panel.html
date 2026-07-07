@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BGMI Alive Stats — Control Panel</title>
+<link rel="stylesheet" href="control-panel.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="icon">▶</div>
+      <div>
+        <h1>BGMI Alive Stats</h1>
+        <div class="sub">TOURNAMENT OBSERVER DASHBOARD</div>
+      </div>
+    </div>
+    <div class="live-badge"><span class="live-dot"></span> LIVE</div>
+  </header>
+
+  <div class="stats">
+    <div class="stat-card">
+      <div class="label"><span class="swatch" style="background:var(--green)"></span>TEAMS ALIVE</div>
+      <div class="value" id="statTeams">16</div>
+    </div>
+    <div class="stat-card">
+      <div class="label"><span class="swatch" style="background:#3b82f6"></span>PLAYERS ALIVE</div>
+      <div class="value" id="statPlayers" style="color:#3b82f6">64</div>
+    </div>
+    <div class="stat-card kills">
+      <div class="label"><span class="swatch" style="background:var(--gold)"></span>MATCH KILLS</div>
+      <div class="value" id="statKills">0</div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn reset-round" id="resetRoundBtn">↺ RESET ROUND</button>
+    <button class="btn reset-all" id="resetAllBtn">🗑 RESET ALL</button>
+    <button class="btn add-team" id="addTeamBtn">+ ADD TEAM</button>
+    <button class="btn export" id="exportBtn">↓ EXPORT JSON</button>
+    <button class="btn import" id="importBtn">↑ IMPORT JSON</button>
+    <a class="btn overlay" href="../BGMI Overlay/overlay (1).html" target="_blank" id="overlayBtn">🖥 OPEN OVERLAY</a>
+    <input type="file" id="importFile" accept="application/json" style="display:none;">
+  </div>
+
+  <div class="section-label"><span>TEAM CONTROLS</span><span class="team-count" id="teamCount">16 Teams</span></div>
+
+  <div class="grid" id="teamGrid"></div>
+
+  <footer>
+    Autosaves to LocalStorage · OBS Browser Source: <code>overlay.html</code> at 1920×1080
+  </footer>
+</div>
+
+<script src="control-panel.js"></script>
+</body>
+</html>

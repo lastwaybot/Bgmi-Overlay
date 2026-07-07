@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BGMI Overlay</title>
+<link rel="stylesheet" href="overlay.css">
+</head>
+<body>
+  <div class="topbar">
+    <div class="stat"><div class="l">TEAMS ALIVE</div><div class="v" id="oTeams">16</div></div>
+    <div class="stat players"><div class="l">PLAYERS ALIVE</div><div class="v" id="oPlayers">64</div></div>
+    <div class="stat kills"><div class="l">MATCH KILLS</div><div class="v" id="oKills">0</div></div>
+  </div>
+
+  <div class="table">
+    <div class="table-head">
+      <span class="title">POINT TABLE</span>
+      <span class="live"><span class="live-dot"></span>LIVE</span>
+    </div>
+    <div id="rows"></div>
+  </div>
+
+<script src="overlay.js"></script>
+</body>
+</html>
