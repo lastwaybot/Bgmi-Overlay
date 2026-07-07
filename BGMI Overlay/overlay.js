@@ -44,21 +44,65 @@ function render(stateOverride){
   });
 
   const rowsEl = document.getElementById('rows');
-  rowsEl.innerHTML = sorted.map((t, i)=>{
+  const existingRows = {};
+  rowsEl.querySelectorAll('.row').forEach(row => {
+    const tid = row.getAttribute('data-team-id');
+    if(tid) existingRows[tid] = row;
+  });
+
+  const activeIds = new Set();
+
+  sorted.forEach((t, i)=>{
     const aliveCount = t.players.filter(p => getPlayerAlive(p)).length;
     const elim = aliveCount === 0;
-    return `
-      <div class="row${elim ? ' eliminated' : ''}">
-        <div class="rank">${i+1}</div>
-        <div class="logo">${renderLogo(t.logo)}</div>
-        <div class="name">${t.name}</div>
-        <div class="alive-dots">
-          ${t.players.map((p, pi) => `<div class="adot${getPlayerAlive(p) ? '' : ' dead'}"></div>`).join('')}
-        </div>
-        <div class="kills"><span class="ic">⚔</span>${t.kills}</div>
-      </div>
-    `;
-  }).join('');
+    const tid = String(t.id);
+    activeIds.add(tid);
+
+    let row = existingRows[tid];
+    if(!row){
+      row = document.createElement('div');
+      row.className = 'row';
+      row.setAttribute('data-team-id', tid);
+      row.innerHTML = `
+        <div class="rank"></div>
+        <div class="logo"></div>
+        <div class="name"></div>
+        <div class="alive-dots"></div>
+        <div class="kills"></div>
+      `;
+    }
+
+    if(elim){
+      row.classList.add('eliminated');
+    }else{
+      row.classList.remove('eliminated');
+    }
+
+    const rankEl = row.querySelector('.rank');
+    const newRank = String(i+1);
+    if(rankEl.textContent !== newRank) rankEl.textContent = newRank;
+
+    const logoEl = row.querySelector('.logo');
+    const logoHTML = renderLogo(t.logo);
+    if(logoEl.innerHTML !== logoHTML) logoEl.innerHTML = logoHTML;
+
+    const nameEl = row.querySelector('.name');
+    if(nameEl.textContent !== t.name) nameEl.textContent = t.name;
+
+    const dotsEl = row.querySelector('.alive-dots');
+    const dotsHTML = t.players.map((p, pi) => `<div class="adot${getPlayerAlive(p) ? '' : ' dead'}"></div>`).join('');
+    if(dotsEl.innerHTML !== dotsHTML) dotsEl.innerHTML = dotsHTML;
+
+    const killsEl = row.querySelector('.kills');
+    const killsHTML = `<span class="ic">⚔</span>${t.kills}`;
+    if(killsEl.innerHTML !== killsHTML) killsEl.innerHTML = killsHTML;
+
+    rowsEl.appendChild(row);
+  });
+
+  Object.keys(existingRows).forEach(tid => {
+    if(!activeIds.has(tid)) existingRows[tid].remove();
+  });
 }
 
 // Real-time sync: instant updates from control panel via BroadcastChannel
