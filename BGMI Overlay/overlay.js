@@ -61,7 +61,7 @@ function render(stateOverride){
     let row = existingRows[tid];
     if(!row){
       row = document.createElement('div');
-      row.className = 'row';
+      row.className = 'row new-row';
       row.setAttribute('data-team-id', tid);
       row.innerHTML = `
         <div class="rank"></div>
@@ -70,6 +70,8 @@ function render(stateOverride){
         <div class="alive-dots"></div>
         <div class="kills"></div>
       `;
+    }else{
+      row.classList.remove('new-row');
     }
 
     if(elim){
@@ -97,7 +99,9 @@ function render(stateOverride){
     const killsHTML = `<span class="ic">⚔</span>${t.kills}`;
     if(killsEl.innerHTML !== killsHTML) killsEl.innerHTML = killsHTML;
 
-    rowsEl.appendChild(row);
+    if(rowsEl.children[i] !== row){
+      rowsEl.insertBefore(row, rowsEl.children[i] || null);
+    }
   });
 
   Object.keys(existingRows).forEach(tid => {
